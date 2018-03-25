@@ -8,9 +8,6 @@ namespace Players;
  */
 interface Player
 {
-    const KNOCKOUT_LOSER = 100;
-    const DEFENDER_GOT_LUCKY = 101;
-
     /**
      * @return string
      */
@@ -22,20 +19,20 @@ interface Player
     public function getHealth(): int;
 
     /**
-     * Subtracts damage from player health.
+     * Attacks the other player.
      *
-     * @param Player $attacker
+     * @param Player $defender
      * @return bool
      */
-    public function takeHit(Player $attacker);
+    public function strike(Player $defender);
 
     /**
-     * What damage should I suffer from this attacker?
+     * Subtracts damage from player health.
      *
-     * @param Player $attacker
-     * @return int
+     * @param int $damage
+     * @return bool
      */
-    public function getDamageSuffered(Player $attacker): int;
+    public function takeHit(int $damage);
 
     /**
      * What damage could I provoke to this defender?
@@ -59,4 +56,9 @@ interface Player
      * @return int
      */
     public function getSpeed(): int;
+
+    /**
+     * @return Skill
+     */
+    public function getLuck(): Skill;
 }

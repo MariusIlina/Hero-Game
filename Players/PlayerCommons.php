@@ -3,10 +3,10 @@
 namespace Players;
 
 /**
- * Trait PlayerAccessors
+ * Trait PlayerCommons
  * @package Players
  */
-trait PlayerAccessors
+trait PlayerCommons
 {
     /**
      * @var string $name
@@ -34,14 +34,9 @@ trait PlayerAccessors
     private $speed;
 
     /**
-     * @var array $defensiveSkills
+     * @var int $consecutiveStrikes
      */
-    private $defensiveSkills;
-
-    /**
-     * @var array $aggressiveSkills
-     */
-    private $aggressiveSkills;
+    private $consecutiveStrikes;
 
     /**
      * @return string
@@ -57,33 +52,6 @@ trait PlayerAccessors
     public function getHealth(): int
     {
         return $this->health;
-    }
-
-    /**
-     * Subtracts damage from player health.
-     *
-     * @param Player $attacker
-     * @return mixed
-     */
-    public function takeHit(Player $attacker)
-    {
-        $damage = $this->getDamageSuffered($attacker);
-        $this->health = $this->health - $damage;
-
-        if ($this->health <= 0) {
-            return self::KNOCKOUT_LOSER;
-        }
-    }
-
-    /**
-     * What damage should I suffer from this attacker?
-     *
-     * @param Player $attacker
-     * @return int
-     */
-    public function getDamageSuffered(Player $attacker): int
-    {
-        return $attacker->getStrength() - $this->defence;
     }
 
     /**
@@ -119,5 +87,13 @@ trait PlayerAccessors
     public function getSpeed(): int
     {
         return $this->strength;
+    }
+
+    /**
+     * @return Skill
+     */
+    public function getLuck(): Skill
+    {
+        return $this->luck;
     }
 }

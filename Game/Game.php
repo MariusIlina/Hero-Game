@@ -1,5 +1,7 @@
 <?php
 
+namespace Game;
+
 use Players\Player;
 
 /**
@@ -21,48 +23,29 @@ final class Game
     {
         static $turn;
 
+        if ($turn >= self::MAXIMUM_TURNS) {
+            die('GAME OVER');
+        }
+
         sleep(self::TIME_BETWEEN_TURNS);
+        $turn++;
 
-        if ($turn < self::MAXIMUM_TURNS) {
-            $turn++;
+        // Who hits who?
+        self::explainRound($attacker, $defender);
 
-            // Who hits who?
-            self::explainRound($attacker, $defender);
+        // Attacker strike
+        $attacker->strike($defender);
 
-            // Attacker strike
-            self::handleAttack($attacker, $defender);
+        // Defender health after attack
+        self::showDefenderHealth($attacker, $defender);
 
-            // Defender health after attack
-            self::showDefenderHealth($defender);
-
-            // Recurse to next turn, but reverse players
-            self::play($defender, $attacker);
-        }
-
-        die('GAME OVER');
+        // Recurse to next turn, but reverse players
+        self::play($defender, $attacker);
     }
 
     /**
-     * Attacker hit means that defender must take the hit.
-     *
-     * @param Player $attacker
-     * @param Player $defender
-     */
-    public static function handleAttack(Player $attacker, Player $defender)
-    {
-        $hit = $defender->takeHit($attacker);
-
-        switch ($hit) {
-            case Player::KNOCKOUT_LOSER:
-                die ($attacker->getName() . ' WINS BY KNOCKOUT');
-            case Player::DEFENDER_GOT_LUCKY:
-                print $attacker->getName() . ' MISSED THE HIT!';
-                break;
-        }
-    }
-
-    /**
-     * Decides who attacks first, based on speed.
+     * Decides who attacks first, based on speed/luck.
+     * Arguments order is not relevant.
      * 
      * @param Player $a
      * @param Player $b
@@ -70,10 +53,23 @@ final class Game
      */
     public static function getInitialRoles(Player $a, Player $b): array
     {
-        return [
+        // The higher speed
+        $roles = [
             'attacker' => $a->getSpeed() > $b->getSpeed() ? $a : $b,
             'defender' => $a->getSpeed() < $b->getSpeed() ? $a : $b
         ];
+
+        // Is the speed equal? Use luck factor.
+        if ($a->getSpeed() == $b->getSpeed()) {
+            $aLuck = $a->getLuck()->getProbability();
+            $bLuck = $b->getLuck()->getProbability();
+            $roles = [
+                'attacker' => $aLuck > $bLuck ? $a : $b,
+                'defender' => $aLuck < $bLuck ? $a : $b
+            ];
+        }
+
+        return $roles;
     }
 
     /**
@@ -84,17 +80,22 @@ final class Game
      */
     public static function explainRound(Player $attacker, Player $defender)
     {
-        print $attacker->getName() . " hits "
-            . $defender->getName() . ". " . PHP_EOL;
+        print PHP_EOL . $attacker->getName() . " hits "
+            . $defender->getName() . "." . PHP_EOL;
     }
 
     /**
+     * @param Player $attacker
      * @param Player $defender
      */
-    public static function showDefenderHealth(Player $defender)
+    public static function showDefenderHealth(Player $attacker, Player $defender)
     {
         print $defender->getName() . " remaining health: "
             . $defender->getHealth() . PHP_EOL . PHP_EOL;
+
+        if ($defender->getHealth() <= 0) {
+            die ($attacker->getName() . ' WINS BY KNOCKOUT');
+        }
     }
 
     /**
