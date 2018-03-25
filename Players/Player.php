@@ -22,7 +22,6 @@ interface Player
      * Attacks the other player.
      *
      * @param Player $defender
-     * @return bool
      */
     public function strike(Player $defender);
 
@@ -30,7 +29,6 @@ interface Player
      * Subtracts damage from player health.
      *
      * @param int $damage
-     * @return bool
      */
     public function takeHit(int $damage);
 

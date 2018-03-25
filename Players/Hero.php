@@ -3,6 +3,7 @@
 namespace Players;
 
 use Game\Game;
+use Game\Output;
 
 /**
  * Class Hero
@@ -53,7 +54,6 @@ class Hero implements Player
      * Attacks the other player.
      *
      * @param Player $defender
-     * @return int
      */
     public function strike(Player $defender)
     {
@@ -63,50 +63,37 @@ class Hero implements Player
         for ($i = 1; $i <= $consecutiveStrikes; $i++) {
             $defender->takeHit($damageApplied);
         }
-
-        return $consecutiveStrikes;
     }
 
     /**
      * Subtracts damage from player health.
      *
      * @param int $damage
-     * @return bool
      */
     public function takeHit(int $damage)
     {
-        if ($this->tryLuck()) {
-            return false;
-        }
-
-        if ($this->tryMagicShield()) {
-            $damage = $damage / 2;
-        }
+        $damage = $this->tryMagicShield($damage);
+        $damage = $this->tryLuck($damage);
 
         $this->health = $this->health - $damage;
-
-        print $this->getName() . ' takes the hit and ' .
-            'suffers a damage of ' . $damage . PHP_EOL;
-
-        return true;
+        Output::takeHitOutput($this, $damage);
     }
 
     /**
      * Try to dodge a bullet!
      *
-     * @return bool
+     * @param int $damage
+     * @return mixed
      */
-    private function tryLuck()
+    private function tryLuck(int $damage): int
     {
         if ($this->luck->apply()) {
-            print $this->name . ' is using LUCK. Usage chance: ' .
-                $this->luck->getFavorableCases() . ' of ' .
-                round(Game::MAXIMUM_TURNS / 2) . ' cases.' . PHP_EOL;
+            Output::skillOutput($this, $this->luck);
 
-            return true;
+            return 0;
         }
 
-        return false;
+        return $damage;
     }
 
     /**
@@ -114,12 +101,12 @@ class Hero implements Player
      *
      * @return int
      */
-    private function tryRapidStrike()
+    private function tryRapidStrike(): int
     {
         $consecutiveStrikes = $this->consecutiveStrikes;
         if ($this->rapidStrike->apply()) {
             $consecutiveStrikes++;
-            print 'USING ' . $this->rapidStrike->getName() . " (strike twice)" . PHP_EOL;
+            Output::skillOutput($this, $this->rapidStrike);
         }
 
         return $consecutiveStrikes;
@@ -128,18 +115,17 @@ class Hero implements Player
     /**
      * Try cut the damage to half!
      *
-     * @return bool
+     * @param int $damage
+     * @return int
      */
-    private function tryMagicShield()
+    private function tryMagicShield(int $damage): int
     {
         if ($this->magicShield->apply()) {
-            print $this->name . ' is using MAGIC SHIELD. Usage chance ' .
-                $this->magicShield->getFavorableCases() . ' of ' .
-                round(Game::MAXIMUM_TURNS / 2) . ' cases.' . PHP_EOL;
+            Output::skillOutput($this, $this->magicShield);
 
-            return true;
+            return $damage / 2;
         }
 
-        return false;
+        return $damage;
     }
 }

@@ -3,6 +3,7 @@
 namespace Players;
 
 use Game\Game;
+use Game\Output;
 
 
 /**
@@ -56,37 +57,29 @@ class Monster implements Player
      * Subtracts damage from player health.
      *
      * @param int $damage
-     * @return bool
      */
     public function takeHit(int $damage)
     {
-        if ($this->tryLuck()) {
-            return false;
-        }
+        $damage = $this->tryLuck($damage);
 
         $this->health = $this->health - $damage;
-
-        print $this->getName() . ' takes the hit and ' .
-            'suffers a damage of ' . $damage . PHP_EOL;
-
-        return true;
+        Output::takeHitOutput($this, $damage);
     }
 
     /**
      * Try to dodge a bullet!
      *
-     * @return bool
+     * @param int $damage
+     * @return mixed
      */
-    private function tryLuck()
+    private function tryLuck(int $damage): int
     {
         if ($this->luck->apply()) {
-            print $this->name . ' is using LUCK. Usage chance: ' .
-                $this->luck->getFavorableCases() . ' of ' .
-                round(Game::MAXIMUM_TURNS / 2) . ' cases. ' . PHP_EOL;
+            Output::skillOutput($this, $this->luck);
 
-            return true;
+            return 0;
         }
 
-        return false;
+        return $damage;
     }
 }
