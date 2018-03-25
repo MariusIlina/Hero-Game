@@ -37,6 +37,8 @@ php play.php
     
     The reason I did this is because if all favorable cases were mandatory to be used, then all the skill occurrences would pile-up at the beginning of the game and this would eliminate any randomness. I'm sure there are other solutions, but this is what I came up with.
    
+3. Skills can occur immediately one after another. For example, if Monster hits Orderus, then Orderus can first use Magic Shield then use Luck one after another. Of course, this makes Magic Shield useless, cause Luck brings the damage to 0. But it can happen.
+
 <h3>Code-related notes:</h3>
 
 1. New players can be added by creating a new class that implements the Player interface.
