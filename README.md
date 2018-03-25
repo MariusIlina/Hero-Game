@@ -9,14 +9,19 @@ git clone https://github.com/MariusIlina/Hero-Game.git
 ```
 
 <h5>Install PHPUnit and insure auto-loading</h5>
+
 ```bash
 composer install
 ```
+
 <h5>Run tests</h5>
+
 ```bash
 ./vendor/bin/phpunit
 ```
+
 <h5>Run game</h5>
+
 ```bash
 php play.php
 ```
