@@ -3,9 +3,11 @@
 <h3>Installation:</h3>
 PHP 7.0 is required.
 <h5>Clone the project</h5>
+
 ```bash
 git clone https://github.com/MariusIlina/Hero-Game.git
 ```
+
 <h5>Install PHPUnit and insure auto-loading</h5>
 ```bash
 composer install
