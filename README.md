@@ -1,6 +1,6 @@
 # Hero-Game
 
-###Game-flow observations:
+##Game-flow observations:
 
 1. **Luck** is treated as a skill, because it shares some common behaviour with Magic Shield and Rapid Strike.
 2. Any skill occurrence is limited to the maximum favorable cases, but is not necessary that they all occur. For example:
@@ -11,7 +11,7 @@
     
     The reason I did this is because if all favorable cases were mandatory to be used, then all the skill occurrences would pile-up at the beginning of the game and this would eliminate any randomness. I'm sure there are other solutions, but this is what I came up with.
    
-###Code-related notes: 
+##Code-related notes: 
 1. New players can be added by creating a new class that implements the Player interface.
 2. New skills can be added by acquiring a Skill object in the constructor of a Player class and defining a behaviour for that Skill inside the Player class.
 3. Objects of Skill class are only used to determine whether a skill occurs or not, based on how many times it occurred and some randomness. What happens if the skill occurred is decided inside the Player instance. 
