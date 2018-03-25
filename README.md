@@ -1,5 +1,16 @@
 # Hero-Game
 
+<h3>Installation:</h3>
+PHP 7.0 is required.
+<h5>Clone the project</h5>
+```git clone https://github.com/MariusIlina/Hero-Game.git```
+<h5>Install PHPUnit and insure auto-loading</h5>
+```composer install```
+<h5>Run tests</h5>
+```./vendor/bin/phpunit```
+<h5>Run game</h5>
+```php play.php```
+
 <h3>Game-flow observations:</h3>
 
 1. **Luck** is treated as a skill, because it shares some common behaviour with **Magic Shield** and **Rapid Strike**.
