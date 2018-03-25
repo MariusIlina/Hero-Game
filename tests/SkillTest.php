@@ -25,6 +25,19 @@ final class SkillTest extends TestCase
     }
 
     /**
+     * Confirm that apply() returns what it is supposed to.
+     */
+    public function test_apply_skill()
+    {
+        // Either true or false, this should always be boolean.
+        $this->assertEquals('boolean', gettype($this->skill->apply()));
+
+        // When timesUsed == favorableCases, it should return false.
+        $this->skill->timesUsed = $this->skill->getFavorableCases();
+        $this->assertFalse($this->skill->apply());
+    }
+
+    /**
      * Confirm that getProbability() returns what it is supposed to.
      */
     public function test_get_probability()
@@ -50,18 +63,5 @@ final class SkillTest extends TestCase
     {
         $this->assertEquals('integer', gettype($this->skill->getFavorableCases()));
         $this->assertEquals(2, $this->skill->getFavorableCases());
-    }
-
-    /**
-     * Confirm that apply() returns what it is supposed to.
-     */
-    public function test_apply_skill()
-    {
-        // Either true or false, this should always be boolean.
-        $this->assertEquals('boolean', gettype($this->skill->apply()));
-
-        // When timesUsed == favorableCases, it should return false.
-        $this->skill->timesUsed = $this->skill->getFavorableCases();
-        $this->assertFalse($this->skill->apply());
     }
 }
