@@ -14,7 +14,7 @@ git clone https://github.com/MariusIlina/Hero-Game.git
 composer install
 ```
 
-<h5>Run tests (I tried to cover some basic testing, but there are complex flows that remain untested, like the occurrence of a skill)</h5>
+<h5>Run tests (I covered some very basic testing, but there are complex flows that remain untested, like the occurrence of a skill and others)</h5>
 
 ```bash
 ./vendor/bin/phpunit
